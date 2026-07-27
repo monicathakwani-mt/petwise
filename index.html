@@ -80,17 +80,22 @@
       gap: 12px;
     }
 
+    /* Updated Brand Logo Styling */
     .brand-logo {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       background-color: var(--brand-primary);
-      color: #FFFFFF;
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
       box-shadow: 0 4px 10px rgba(30, 77, 58, 0.2);
+    }
+
+    .brand-logo svg {
+      width: 24px;
+      height: 24px;
+      fill: #FAF8F5; /* Bright Cream/White Paw Color */
     }
 
     .brand-info h1 {
@@ -319,34 +324,10 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* Typography & Formatting within Assistant Messages */
-    .message-bubble p {
-      margin-bottom: 8px;
-    }
-    .message-bubble p:last-child {
-      margin-bottom: 0;
-    }
-    .message-bubble ul, .message-bubble ol {
-      margin: 8px 0 8px 20px;
-    }
-    .message-bubble li {
-      margin-bottom: 4px;
-    }
-    .message-bubble code {
-      background-color: var(--bg-canvas);
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: monospace;
-      font-size: 0.85em;
-    }
-    .message-bubble pre {
-      background-color: #121A1F;
-      color: #ECEFF1;
-      padding: 12px;
-      border-radius: var(--radius-sm);
-      overflow-x: auto;
-      margin: 10px 0;
-    }
+    .message-bubble p { margin-bottom: 8px; }
+    .message-bubble p:last-child { margin-bottom: 0; }
+    .message-bubble ul, .message-bubble ol { margin: 8px 0 8px 20px; }
+    .message-bubble li { margin-bottom: 4px; }
 
     /* Typing Indicator */
     .typing-indicator {
@@ -384,7 +365,7 @@
       40% { transform: scale(1.0); }
     }
 
-    /* System Banner / Error Alert */
+    /* System Alert Banner */
     .alert-banner {
       padding: 12px 16px;
       border-radius: var(--radius-sm);
@@ -604,7 +585,6 @@
       cursor: pointer;
     }
 
-    /* Responsive Adjustments */
     @media (max-width: 640px) {
       .app-header { padding: 10px 14px; }
       .brand-info p { display: none; }
@@ -617,7 +597,11 @@
 
   <header class="app-header">
     <div class="brand-container">
-      <div class="brand-logo" aria-label="PetWise Logo">🐾</div>
+      <div class="brand-logo" aria-label="PetWise Logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path d="M256 224c-29.5 0-56.7 10.9-78.1 28.7-12.7 10.6-20.7 26.2-21.9 42.7-2.3 32 15.6 62.2 43.8 77.2 16.9 9 36.3 13.4 56.2 13.4s39.3-4.4 56.2-13.4c28.2-15 46.1-45.2 43.8-77.2-1.2-16.5-9.2-32.1-21.9-42.7-21.4-17.8-48.6-28.7-78.1-28.7zm-128-48c-22.1 0-40 21.5-40 48s17.9 48 40 48 40-21.5 40-48-17.9-48-40-48zm256 0c-22.1 0-40 21.5-40 48s17.9 48 40 48 40-21.5 40-48-17.9-48-40-48zm-192-64c-22.1 0-40 21.5-40 48s17.9 48 40 48 40-21.5 40-48-17.9-48-40-48zm128 0c-22.1 0-40 21.5-40 48s17.9 48 40 48 40-21.5 40-48-17.9-48-40-48z"/>
+        </svg>
+      </div>
       <div class="brand-info">
         <h1>PetWise</h1>
         <p>Your Trusted Companion for Everyday Pet Care</p>
@@ -724,14 +708,12 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Elements
       const chatStream = document.getElementById('chat-stream');
       const chatInput = document.getElementById('chat-input');
       const sendBtn = document.getElementById('send-btn');
       const typingIndicator = document.getElementById('typing-indicator');
       const promptPills = document.querySelectorAll('.prompt-pill');
 
-      // Modal Elements
       const settingsModal = document.getElementById('settings-modal');
       const openSettingsBtn = document.getElementById('open-settings');
       const closeSettingsBtn = document.getElementById('close-settings');
@@ -740,14 +722,12 @@
       const apiUrlInput = document.getElementById('api-url');
       const bearerTokenInput = document.getElementById('bearer-token');
 
-      // Load Settings from LocalStorage
       let apiUrl = localStorage.getItem('petwise_langflow_url') || '';
       let bearerToken = localStorage.getItem('petwise_langflow_token') || '';
 
       apiUrlInput.value = apiUrl;
       bearerTokenInput.value = bearerToken;
 
-      // Modal Event Listeners
       const toggleModal = (show) => {
         if (show) settingsModal.classList.add('active');
         else settingsModal.classList.remove('active');
@@ -765,13 +745,11 @@
         toggleModal(false);
       });
 
-      // Auto-sizing Textarea
       chatInput.addEventListener('input', () => {
         chatInput.style.height = 'auto';
         chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
       });
 
-      // Keyboard submit (Enter without Shift)
       chatInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
           e.preventDefault();
@@ -779,10 +757,8 @@
         }
       });
 
-      // Send Button Click
       sendBtn.addEventListener('click', () => handleSendMessage());
 
-      // Quick Starter Pills Click
       promptPills.forEach(pill => {
         pill.addEventListener('click', () => {
           const promptText = pill.getAttribute('data-prompt');
@@ -792,7 +768,6 @@
         });
       });
 
-      // Append Message Function
       function appendMessage(sender, text) {
         const row = document.createElement('div');
         row.className = `message-row ${sender}-row`;
@@ -805,7 +780,6 @@
         bubble.className = 'message-bubble';
 
         if (sender === 'assistant') {
-          // Render markdown for assistant responses
           bubble.innerHTML = marked.parse(text);
         } else {
           bubble.textContent = text;
@@ -814,12 +788,9 @@
         row.appendChild(avatar);
         row.appendChild(bubble);
         chatStream.appendChild(row);
-
-        // Scroll to bottom
         chatStream.scrollTop = chatStream.scrollHeight;
       }
 
-      // Display Alert Banner
       function displayAlert(message) {
         const alert = document.createElement('div');
         alert.className = 'alert-banner danger';
@@ -828,25 +799,20 @@
         chatStream.scrollTop = chatStream.scrollHeight;
       }
 
-      // Handle Send Message & Call API
       async function handleSendMessage() {
         const text = chatInput.value.trim();
         if (!text) return;
 
-        // Render User Message
         appendMessage('user', text);
 
-        // Clear and Reset Input
         chatInput.value = '';
         chatInput.style.height = 'auto';
 
-        // Check if API settings are configured
         if (!apiUrl) {
           displayAlert('API URL is not configured. Please click the ⚙️ settings button to set your Langflow Endpoint URL.');
           return;
         }
 
-        // Show Typing Indicator
         typingIndicator.style.display = 'flex';
         chatStream.scrollTop = chatStream.scrollHeight;
         sendBtn.disabled = true;
@@ -874,7 +840,6 @@
 
           const data = await response.json();
 
-          // Standard Langflow extraction with fallbacks
           let assistantText = '';
           if (data.outputs?.[0]?.outputs?.[0]?.results?.message?.text) {
             assistantText = data.outputs[0].outputs[0].results.message.text;
